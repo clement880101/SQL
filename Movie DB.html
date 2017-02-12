@@ -1,58 +1,46 @@
-<!DOCTYPE html>
-
+<!DOCTYPE HTML>
 <html>
-  
   <head>
-    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Movie Database Entry Form</title>
-  
+    <link type="text/css" rel="stylesheet" href="MovieDBStyle.css"/>
   </head>
-  
+
   <body>
-    
-    <h1>Move Database Entry Form</h1>
-    
+    <div class="form-style">
       <form>
-
-      Series ID:
-        <input type="number" name="series_id"><br><br>
-      Series Title:
-        <input type="text" name="title"><br><br>
-      Series Year:
-        <input type="number" name="year"><br><br>
-      Series Language:
-        <input type="text" name="language"><br><br>
-      Series Budget:
-        <input type="number" name="budget"><br><br>
-      Actor ID:
-        <input type="number" name="actor_id"><br><br>
-      Actor First Name:
-        <input type="text" name="first_name"><br><br>
-      Actor Last Name:
-        <input type="text" name="last_name"><br><br>
-      Actor Nationality:
-        <input type="text" name="nationality"><br><br>
-      Network ID:
-        <input type="number" name="network_id"><br><br>
-      Network Name:
-        <input type="text" name="network_name"><br><br>
-      Network Location:
-        <input type="text" name="location"><br><br>
-      Award ID:
-        <input type="number" name="award_id"><br><br>
-      Award Name:
-        <input type="text" name="award_name"><br><br>
-      Award Category:
-        <input type="text" name="category"><br><br>
-      Award Organizer:
-        <input type="text" name="organizer"><br><br>
-
-        <input type="submit" value="Submit">
-
+        <h1>Movie Database Entry Form</h1>
+        <fieldset>
+          <legend><span class="number">1</span>Series Info</legend>
+          <input type="number" name="series_id" placeholder="Series ID">
+          <input type="text" name="title" placeholder="Series Title *">
+          <input type="number" name="year" placeholder="Series Year">
+          <input type="text" name="language" placeholder="Series Language">
+          <input type="number" name="budget" placeholder="Series Budget">
+        </fieldset>
+        <fieldset>
+          <legend><span class="number">2</span>Actor Info</legend>
+          <input type="number" name="actor_id" placeholder="Actor ID">
+          <input type="text" name="first_name" placeholder="Actor First Name *">
+          <input type="text" name="last_name" placeholder="Actor Last Name *">
+          <input type="text" name="nationality" placeholder="Actor Nationality">
+        </fieldset>
+        <fieldset>
+          <legend><span class="number">3</span>Network Info</legend>
+          <input type="number" name="network_id" placeholder="Network ID">
+          <input type="text" name="network_name" placeholder="Network Name *">
+          <input type="text" name="location" placeholder="Network Location">
+        </fieldset>
+        <fieldset>
+          <legend><span class="number">4</span>Award Info</legend>
+          <input type="number" name="award_id" placeholder="Award ID">
+          <input type="text" name="award_name" placeholder="Award Name *">
+          <input type="text" name="category" placeholder="Award Category">
+          <input type="text" name="organizer" placeholder="Award Organizer">
+        </fieldset>
+        <input type="submit" value="Submit" />
         <input type="reset">
-  
       </form>
-
+    </div>
   </body>
-
 </html>
