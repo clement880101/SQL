@@ -1,2 +1,3 @@
 Today, we switched to postgre SQL.
 2/6 We learned html so that we could create entry form for the database.
+We pretty much spent the whole February setting up rasberry pi
