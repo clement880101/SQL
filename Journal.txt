@@ -1,3 +1,2 @@
-Today, we switched to postgre SQL.
-2/6 We learned html so that we could create entry form for the database.
-We pretty much spent the whole February setting up rasberry pi
+3/6 We seperated the entry form from summary form so that reload will not be the same as re submit
+3/9 We set up a secure password entry system to out db.
