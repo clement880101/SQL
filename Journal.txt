@@ -1,2 +1,9 @@
 3/6 We seperated the entry form from summary form so that reload will not be the same as re submit
-3/9 We set up a secure password entry system to out db.
+3/9 I learned about the secure password entry system. The password will be scrabled so that the people
+with access to the db cannot see the password.
+3/13 Using the things we learn from last class, we set up the register form. THe password we entered will be
+encrpyted and saved in the DB.
+3/16 This class, we try to set up the login form. Using cookie and get, we can pass login information between forms.
+When user enter the password, the password will be encrypted to be compared with the password stored in db.
+If all entry are correct, the username info will be passed to the welcome page. Then, the welcome page iwll display
+the username.
