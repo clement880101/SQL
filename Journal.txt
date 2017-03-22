@@ -5,5 +5,9 @@ with access to the db cannot see the password.
 encrpyted and saved in the DB.
 3/16 This class, we try to set up the login form. Using cookie and get, we can pass login information between forms.
 When user enter the password, the password will be encrypted to be compared with the password stored in db.
-If all entry are correct, the username info will be passed to the welcome page. Then, the welcome page iwll display
+If all entry are correct, the username info will be passed to the welcome page. Then, the welcome page will display
 the username.
+
+3/20 We set up a edit profile page for the user to change he/her profile. We wil need to delete the old query and enter a new one.
+
+3/22 After login, we can edit the profile. We also set up a system to prevent back login.
