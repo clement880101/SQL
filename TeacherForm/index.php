@@ -37,8 +37,8 @@
             echo "<option>",$dept_row["deptname"] ,"</option>";
         }
 
-    echo"</select>";
-    pg_close($connection);
+        echo"</select>";
+        pg_close($connection);
     ?>
     <br>
     <br>

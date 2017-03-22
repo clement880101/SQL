@@ -14,11 +14,11 @@ $result = pg_fetch_result($query,0,0);
 echo $result;
 
 if(!$result){
-    header("location: index.html#toregister");
+    header("location: index.php#toregister");
 }else{
     $cookie_name = "login";
-    $cookie_value = "True";
-    setcookie($cookie_name, $cookie_value, time() + (30), "/");
+    $cookie_value = $username;
+    setcookie($cookie_name, $cookie_value, time() + (120), "/");
     header("location: welcome.php"."?username=".$username);
 }
 
