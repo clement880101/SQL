@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 
 3/6 we seperate the entry file from the display file so when we we reload, the entery will not be reentered.
 3/9 we try to create a password entry system today in sql;
 =======
 3/6 We seperated the entry form from summary form so that reload will not be the same as re submit
 3/9 We set up a secure password entry system to out db.
->>>>>>> 08264c27e85e15a275d7a6976443f6634856d37d
+
+4/6 Today, we learned more about the functions for sql. We learned to set up and use the functions to manipulate and show data. In addition, we tried MISO and MIMO functions.
