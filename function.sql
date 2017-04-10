@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS text(a VARCHAR(30), b VARCHAR(30));
 DROP FUNCTION IF EXISTS email(firstname VARCHAR(30), lastname VARCHAR(30), dmain VARCHAR(30));
 DROP FUNCTION IF EXISTS oppemail(fname VARCHAR(30), email VARCHAR(90));
 DROP FUNCTION IF EXISTS mymimo(a INT, b INT, c INT);
-
+DROP FUNCTION IF EXISTS ave_total(VARIADIC inputs NUMERIC[]);
 
 CREATE FUNCTION product(a INTEGER, b INTEGER)
   RETURNS INTEGER AS
@@ -62,6 +62,23 @@ CREATE FUNCTION oppemail(fname VARCHAR(30), email VARCHAR(90),
   $$ LANGUAGE plpgsql;
 
 
+CREATE FUNCTION ave_total(VARIADIC inputs NUMERIC[], OUT total NUMERIC, OUT average NUMERIC)AS
+  $$
+  DECLARE
+    val NUMERIC;
+    count NUMERIC := 0;
+    tot NUMERIC := 0;
+  BEGIN
+   FOR val IN SELECT unnest(inputs)
+     LOOP
+     count := count + 1;
+     tot := tot + val;
+   END LOOP;
+  total = tot;
+  average =  tot/count;
+  END;
+  $$LANGUAGE plpgsql;
+
 
 -- Run
 SELECT * FROM product(4,5);
@@ -70,3 +87,4 @@ SELECT text('car', 'boo');
 SELECT email('clement', 'chang', 'gmail.com');
 SELECT mymimo(1, 2, 43);
 SELECT oppemail('clement' ,email('clement', 'chang'));
+SELECT * FROM ave_total(1,2,2,1,1,1,2,2,2,3);
