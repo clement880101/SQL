@@ -2,6 +2,9 @@ DROP TABLE IF EXISTS domain, category, student, grades;
 DROP FUNCTION IF EXISTS setEmail(first_name VARCHAR(30), last_name VARCHAR(30), category_id INT);
 DROP FUNCTION IF EXISTS getLetter(grades INT);
 DROP FUNCTION IF EXISTS newPerson(first_name VARCHAR(30), last_name VARCHAR(30), role VARCHAR(30));
+DROP FUNCTION IF EXISTS insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[]);
+DROP FUNCTION IF EXISTS average(stu_id INT, d DATE);
+
 
 CREATE TABLE IF NOT EXISTS domain(
   domain_id SERIAL PRIMARY KEY,
@@ -31,7 +34,7 @@ CREATE TABLE IF NOT EXISTS grades(
   student_id INT NOT NULL,
   score INT NOT NULL,
   scoreLetter VARCHAR(2) NOT NULL,
-  date TIMESTAMP NOT NULL,
+  date DATE NOT NULL,
   FOREIGN KEY (student_id) REFERENCES student(student_id)
 );
 
@@ -92,9 +95,68 @@ CREATE FUNCTION newPerson(first_name VARCHAR(30), last_name VARCHAR(30), role VA
   END;
   $$ LANGUAGE plpgsql;
 
+
+CREATE FUNCTION insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[])
+  RETURNS TABLE(
+    grade_id INT,
+    student_id INT,
+    score INT,
+    scoreLetter VARCHAR(2),
+    date DATE
+  )
+  AS $$
+  DECLARE
+    input INT;
+  BEGIN
+    FOR input IN SELECT unnest(grades)
+      LOOP
+        INSERT INTO grades(student_id, score, scoreLetter, date) VALUES (stud_id, input, getletter(input), insertMulGrades.d);
+    END LOOP;
+
+    RETURN QUERY SELECT grades.grade_id, grades.student_id, grades.score, grades.scoreLetter, grades.date FROM grades
+    WHERE stud_id = grades.student_id AND d = grades.date;
+  END;
+  $$LANGUAGE plpgsql;
+
+CREATE FUNCTION average(stu_id INT, d DATE)
+  RETURNS TABLE(
+    score VARCHAR(3),
+    name  VARCHAR(90)
+  )
+  AS $$
+  DECLARE
+    total NUMERIC := 0;
+    count INT := 0;
+    input INT;
+    fname VARCHAR(30);
+    lname VARCHAR(30);
+  BEGIN
+    FOR input IN SELECT grades.score FROM grades WHERE grades.date < d AND student_id = stu_id
+      LOOP
+        total = total + input;
+        count = count + 1;
+    END LOOP;
+
+    SELECT student.first_name INTO fname FROM student WHERE stu_id = student_id;
+    SELECT student.last_name INTO lname FROM student WHERE stu_id = student_id;
+
+    RAISE NOTICE '% % has a grade of %', fname, lname, getletter(total/count);
+
+    score := getletter(total/count);
+    name := concat(concat(fname, ' '), lname);
+    RETURN NEXT;
+  END;
+  $$LANGUAGE plpgsql;
+
+CREATE FUNCTION
+
+-- base value
 INSERT INTO domain(domain_suffix) VALUES ('student.pas.org');
 INSERT INTO domain(domain_suffix) VALUES ('teacher.pas.org');
 INSERT INTO category(category_name, domain_id) VALUES ('students', 1);
 INSERT INTO category(category_name, domain_id) VALUES ('teachers', 2);
 
+-- test
 SELECT * FROM newPerson('Clement', 'Chang', 'students');
+SELECT * FROM insertMulGrades(1, '02/02/2014', 90, 80, 90,100, 83);
+SELECT * FROM average(1, '02/28/2014');
