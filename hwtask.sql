@@ -96,6 +96,7 @@ CREATE FUNCTION newPerson(first_name VARCHAR(30), last_name VARCHAR(30), role VA
   $$ LANGUAGE plpgsql;
 
 
+
 CREATE FUNCTION insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[])
   RETURNS TABLE(
     grade_id INT,
@@ -104,7 +105,8 @@ CREATE FUNCTION insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[])
     scoreLetter VARCHAR(2),
     date DATE
   )
-  AS $$
+
+AS $$
   DECLARE
     input INT;
   BEGIN
@@ -147,8 +149,19 @@ CREATE FUNCTION average(stu_id INT, d DATE)
     RETURN NEXT;
   END;
   $$LANGUAGE plpgsql;
-
-CREATE FUNCTION
+  
+  
+CREATE FUNCTION setdomain(role VARCHAR(30))
+  RETURNS VOID AS
+  $$
+  DECLARE
+    domainid INT;
+  BEGIN
+    INSERT INTO domain(domain_suffix) VALUES (concat(role, '.pas.org'));
+    SELECT domain.domain_id INTO domainid FROM domain WHERE domain_suffix = concat(role, '.pas.org');
+    INSERT INTO category(category_name, domain_id) VALUES (role, domainid);
+  END;
+  $$LANGUAGE plpgsql;
 
 -- base value
 INSERT INTO domain(domain_suffix) VALUES ('student.pas.org');
