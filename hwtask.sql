@@ -158,13 +158,16 @@ CREATE FUNCTION setdomain(role VARCHAR(30))
   $$
   DECLARE
     domainid INT;
+    countduplicate INT;
   BEGIN
+    SELECT count(category_name) INTO countduplicate FROM category WHERE category_name = role;
 
+    IF countduplicate = 0 THEN
+      INSERT INTO domain(domain_suffix) VALUES (concat(role, '.pas.org'));
+      SELECT domain.domain_id INTO domainid FROM domain WHERE domain.domain_suffix = concat(role, '.pas.org');
+      INSERT INTO category(category_name, domain_id) VALUES (role, domainid);
+    END IF;
 
-    INSERT INTO domain(domain_suffix) VALUES (concat(role, '.pas.org'));
-    SELECT domain.domain_id INTO domainid FROM domain WHERE domain.domain_suffix = concat(role, '.pas.org');
-    INSERT INTO category(category_name, domain_id) VALUES (role, domainid);
-    
     RETURN QUERY SELECT category.category_id, category.category_name, domain.domain_id, domain.domain_suffix
                  FROM domain INNER JOIN category USING (domain_id);
   END;
