@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS getLetter(grades INT);
 DROP FUNCTION IF EXISTS newPerson(first_name VARCHAR(30), last_name VARCHAR(30), role VARCHAR(30));
 DROP FUNCTION IF EXISTS insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[]);
 DROP FUNCTION IF EXISTS average(stu_id INT, d DATE);
-
+DROP FUNCTION IF EXISTS setdomain(role VARCHAR(30));
 
 CREATE TABLE IF NOT EXISTS domain(
   domain_id SERIAL PRIMARY KEY,
@@ -96,7 +96,6 @@ CREATE FUNCTION newPerson(first_name VARCHAR(30), last_name VARCHAR(30), role VA
   $$ LANGUAGE plpgsql;
 
 
-
 CREATE FUNCTION insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[])
   RETURNS TABLE(
     grade_id INT,
@@ -105,8 +104,7 @@ CREATE FUNCTION insertMulGrades(stud_id INT, d DATE, VARIADIC grades INT[])
     scoreLetter VARCHAR(2),
     date DATE
   )
-
-AS $$
+  AS $$
   DECLARE
     input INT;
   BEGIN
@@ -149,27 +147,35 @@ CREATE FUNCTION average(stu_id INT, d DATE)
     RETURN NEXT;
   END;
   $$LANGUAGE plpgsql;
-  
-  
+
 CREATE FUNCTION setdomain(role VARCHAR(30))
-  RETURNS VOID AS
+  RETURNS TABLE(
+    category_id INT,
+    category_name VARCHAR(30),
+    domain_id INT,
+    domain_suffix VARCHAR(30)
+  )AS
   $$
   DECLARE
     domainid INT;
   BEGIN
+
+
     INSERT INTO domain(domain_suffix) VALUES (concat(role, '.pas.org'));
-    SELECT domain.domain_id INTO domainid FROM domain WHERE domain_suffix = concat(role, '.pas.org');
+    SELECT domain.domain_id INTO domainid FROM domain WHERE domain.domain_suffix = concat(role, '.pas.org');
     INSERT INTO category(category_name, domain_id) VALUES (role, domainid);
+    
+    RETURN QUERY SELECT category.category_id, category.category_name, domain.domain_id, domain.domain_suffix
+                 FROM domain INNER JOIN category USING (domain_id);
   END;
   $$LANGUAGE plpgsql;
 
--- base value
-INSERT INTO domain(domain_suffix) VALUES ('student.pas.org');
-INSERT INTO domain(domain_suffix) VALUES ('teacher.pas.org');
-INSERT INTO category(category_name, domain_id) VALUES ('students', 1);
-INSERT INTO category(category_name, domain_id) VALUES ('teachers', 2);
 
 -- test
+SELECT * FROM setdomain('students');
+SELECT * FROM setdomain('teachers');
+
+SELECT * FROM category;
 SELECT * FROM newPerson('Clement', 'Chang', 'students');
 SELECT * FROM insertMulGrades(1, '02/02/2014', 90, 80, 90,100, 83);
 SELECT * FROM average(1, '02/28/2014');
