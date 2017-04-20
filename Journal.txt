@@ -7,3 +7,5 @@
 4/6 Today, we learned more about the functions for sql. We learned to set up and use the functions to manipulate and show data. In addition, we tried MISO and MIMO functions.
 4/10 The two tasks today are to create a database of student email with two functions: setemail and getletter. Then, task 2 prompt us to create a newperson function that fills in the student table accroding to the name and last name entered.
 4/13 Today we do task 3~5. Task 3 requires us to enter an array of grades and insert it in the table. Here, i used loop to get each array value and insert each value into the table. Task 4. requires us to find the average score of student within a certain timeframe. To do that, i loop trhought the table and query for name.
+4/17 Jojo and I presented our functions.
+4/20 The rest of the class prsented the functions.
